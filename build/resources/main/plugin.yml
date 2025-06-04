@@ -1,0 +1,14 @@
+name: CheckAfk
+version: '1.0-SNAPSHOT'
+main: newblock.checkafk.CheckAfk
+softdepend: [PlaceholderAPI]
+commands:
+  checkafk:
+    usage: /checkafk reload
+    permission: checkafk.reload
+    description: 重新载入配置文件
+permissions:
+  checkafk.reload:
+    default: op
+  checkafk.bypass:
+    default: false

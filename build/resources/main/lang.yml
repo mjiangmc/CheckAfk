@@ -1,0 +1,6 @@
+reload-success: "&a配置已重载！"
+no-permission: "&c你没有权限执行此命令！"
+usage: "&b用法: /checkafk reload"
+activity-triggered: "&b活动: {action} - 玩家: {player}"
+checking-player: "&b检查: {player} - 上次活跃 {seconds} 秒前"
+executing-command: "&a执行命令: {command}"

@@ -1,0 +1,34 @@
+#########################################################
+# 挂机检测插件 By Wr (有疑问请联系作者https://newblock.top)
+# 给与玩家checkafk.bypass权限可以绕过全部挂机检测
+#########################################################
+# 挂机多少秒后执行命令
+time: 300
+# 挂机踢出执行的命令
+commands:
+  - 'kick %player% 挂机时间过长'
+# 插件信息前缀
+prefix: "&6NewBlock&7&oAFK &e>>"
+# 调试设置
+debug: false
+############################
+#  哪些动作认为玩家不在挂机
+############################
+# 移动(会被挂机池绕过,不推荐开启)
+move: false
+# 疾跑
+sprint: true
+# 潜行
+shift: true
+# 快捷栏切换物品
+hotbar: true
+# 破坏方块
+breakblock: true
+# 放置方块
+placeblock: true
+# 使用物品
+useitem: true
+# 攻击实体
+attack: true
+# 查看成就(暂时不支持)
+achievement: true
