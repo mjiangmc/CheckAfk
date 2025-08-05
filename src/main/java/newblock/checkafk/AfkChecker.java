@@ -35,15 +35,6 @@ public class AfkChecker implements Runnable {
         }
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-            // 检查是否在被禁用的世界中
-            if (!plugin.isWorldEnabled(player)) {
-                if (debug) {
-                    Bukkit.getLogger().info(plugin.formatMessage(
-                        "跳过世界 " + player.getWorld().getName() + " 中的玩家 " + player.getName()));
-                }
-                continue;
-            }
-            
             if (player.hasPermission("checkafk.bypass")) continue;
 
             long last = plugin.getLastActive(player);

@@ -84,4 +84,8 @@ public class ActivityListener implements Listener {
             update((Player) e.getDamager(), "attack");
     }
 
+    @EventHandler
+    public void onAchievement(PlayerAchievementAwardedEvent e) {
+        update(e.getPlayer(), "achievement");
+    }
 }

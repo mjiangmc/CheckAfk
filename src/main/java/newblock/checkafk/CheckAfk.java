@@ -166,6 +166,11 @@ public final class CheckAfk extends JavaPlugin {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        // 支持两种命令格式: /checkafk 和 /afkcheck
+        if (!command.getName().equalsIgnoreCase("checkafk") && !command.getName().equalsIgnoreCase("afkcheck")) {
+            return false;
+        }
+        
         if (args.length == 0) {
             sender.sendMessage(formatMessage("usage"));
             return true;
