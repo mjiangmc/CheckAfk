@@ -1,0 +1,6 @@
+# 玩家AFK数据存储
+# 当mysql.enabled=false时使用此文件存储数据
+players:
+  # UUID: 设置的AFK时间(秒)
+  # 示例:
+  # "a1b2c3d4-e5f6-7890-g1h2-i3j4k5l6m7n8": 300

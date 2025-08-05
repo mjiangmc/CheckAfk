@@ -23,7 +23,9 @@ repositories {
 
 dependencies {
     compileOnly "com.destroystokyo.paper:paper-api:1.12.2-R0.1-SNAPSHOT"
-    compileOnly "com.destroystokyo.paper:paper-api:1.12.2-R0.1-SNAPSHOT"
+    compileOnly 'me.clip:placeholderapi:2.11.6'
+    implementation "com.zaxxer:HikariCP:3.4.5"
+    implementation "mysql:mysql-connector-java:5.1.49"
 }
 
 def targetJavaVersion = 8

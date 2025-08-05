@@ -9,8 +9,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.PlayerAchievementAwardedEvent;
-
 public class ActivityListener implements Listener {
 
     private final CheckAfk plugin;
@@ -86,8 +84,4 @@ public class ActivityListener implements Listener {
             update((Player) e.getDamager(), "attack");
     }
 
-    @EventHandler
-    public void onAchievement(PlayerAchievementAwardedEvent e) {
-        update(e.getPlayer(), "achievement");
-    }
 }

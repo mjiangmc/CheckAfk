@@ -1,6 +1,14 @@
 reload-success: "&a配置已重载！"
 no-permission: "&c你没有权限执行此命令！"
-usage: "&b用法: /checkafk reload"
+usage: |
+  &b重新载入插件: &f/checkafk reload
+  &b设置挂机多长时间时触发命令: &f/checkafk time <秒>
 activity-triggered: "&b活动: {action} - 玩家: {player}"
-checking-player: "&b检查: {player} - 上次活跃 {seconds} 秒前"
+checking-player: "&b检查: {player} - 上次活跃 {seconds} 秒前 (超时: {timeout} 秒)"
 executing-command: "&a执行命令: {command}"
+time-set: "&a挂机检测时间已设置为 {minutes} 秒"
+time-reset: "&aAFK检查时间已重置为默认值"
+time-usage: "&c用法: /checkafk time <分钟>"
+invalid-time: "&c时间必须大于0"
+invalid-number: "&c请输入有效的数字"
+player-only: "&c只有玩家可以使用此命令"

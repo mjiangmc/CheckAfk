@@ -1,6 +1,7 @@
 #########################################################
 # 挂机检测插件 By Wr (有疑问请联系作者https://newblock.top)
-# 给与玩家checkafk.bypass权限可以绕过全部挂机检测
+# 配置文件版本
+configver: 3
 #########################################################
 # 挂机多少秒后执行命令
 time: 300
@@ -10,7 +11,38 @@ commands:
 # 插件信息前缀
 prefix: "&6NewBlock&7&oAFK &e>>"
 # 调试设置
-debug: false
+debug: true
+
+############################
+# 检测时间段设置(24小时制)
+# 格式: "HH:MM-HH:MM"
+# 示例:
+#   - "00:00-06:00" # 凌晨0点到6点不检测
+#   - "12:00-13:00" # 中午12点到13点不检测
+enable-time-range: []
+
+############################
+# 不检测AFK的世界列表
+disabled-worlds: []
+############################
+# MySQL 数据库配置
+############################
+mysql:
+  enabled: false
+  host: "localhost"
+  port: 3306
+  database: "minecraft"
+  username: "root"
+  password: ""
+  table_prefix: "checkafk_"
+  # 连接池设置
+  connection_pool:
+    maximum-pool-size: 10
+    minimum-idle: 5
+    connection-timeout: 30000
+    idle-timeout: 600000
+    max-lifetime: 1800000
+
 ############################
 #  哪些动作认为玩家不在挂机
 ############################
