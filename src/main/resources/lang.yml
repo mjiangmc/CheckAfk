@@ -8,7 +8,7 @@ checking-player: "&b检查: {player} - 上次活跃 {seconds} 秒前 (超时: {t
 executing-command: "&a执行命令: {command}"
 time-set: "&a挂机检测时间已设置为 {minutes} 秒"
 time-reset: "&aAFK检查时间已重置为默认值"
-time-usage: "&c用法: /checkafk time <分钟>"
+time-usage: "&c用法: /checkafk time <秒>"
 invalid-time: "&c时间必须大于0"
 invalid-number: "&c请输入有效的数字"
 player-only: "&c只有玩家可以使用此命令"
