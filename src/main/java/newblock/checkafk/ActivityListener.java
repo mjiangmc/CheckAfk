@@ -41,51 +41,46 @@ public class ActivityListener implements Listener {
         plugin.clearActivity(e.getPlayer());
     }
 
-    @EventHandler
-    public void onMove(PlayerMoveEvent e) {
-        if (!e.getFrom().toVector().equals(e.getTo().toVector()))
-            update(e.getPlayer(), "move");
-    }
-
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onSprint(PlayerToggleSprintEvent e) {
-        update(e.getPlayer(), "sprint");
+        if (e.isSprinting()) {
+            update(e.getPlayer(), "sprint");
+        }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onSneak(PlayerToggleSneakEvent e) {
-        update(e.getPlayer(), "shift");
+        if (e.isSneaking()) {
+            update(e.getPlayer(), "shift");
+        }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onHotbar(PlayerItemHeldEvent e) {
         update(e.getPlayer(), "hotbar");
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent e) {
         update(e.getPlayer(), "breakblock");
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent e) {
         update(e.getPlayer(), "placeblock");
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onUse(PlayerInteractEvent e) {
-        if (e.hasItem() && e.getItem().getType() != Material.AIR)
+        if (e.hasItem() && e.getItem().getType() != Material.AIR) {
             update(e.getPlayer(), "useitem");
+        }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onAttack(EntityDamageByEntityEvent e) {
-        if (e.getDamager() instanceof Player)
+        if (e.getDamager() instanceof Player) {
             update((Player) e.getDamager(), "attack");
-    }
-
-    @EventHandler
-    public void onAchievement(PlayerAchievementAwardedEvent e) {
-        update(e.getPlayer(), "achievement");
+        }
     }
 }
