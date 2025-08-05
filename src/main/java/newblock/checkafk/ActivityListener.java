@@ -21,6 +21,16 @@ public class ActivityListener implements Listener {
 
     private void update(Player player, String key) {
         if (player.hasPermission("checkafk.bypass")) return;
+        
+        // 检查玩家所在世界是否启用AFK检测
+        if (!plugin.isWorldEnabled(player)) {
+            if (config.getBoolean("debug")) {
+                Bukkit.getLogger().info(plugin.formatMessage("world-disabled", 
+                    "player", player.getName(),
+                    "world", player.getWorld().getName()));
+            }
+            return;
+        }
 
         if (config.getBoolean(key)) {
             plugin.updateActivity(player);

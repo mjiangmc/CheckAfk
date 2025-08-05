@@ -36,6 +36,18 @@ public class AfkChecker implements Runnable {
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player.hasPermission("checkafk.bypass")) continue;
+            
+            // 检查玩家所在世界是否启用AFK检测
+            if (!plugin.isWorldEnabled(player)) {
+                if (debug) {
+                    Bukkit.getLogger().info(plugin.formatMessage("world-disabled", 
+                        "player", player.getName(),
+                        "world", player.getWorld().getName()));
+                }
+                // 在禁用世界中，重置玩家的活跃时间
+                plugin.setLastActive(player, now);
+                continue;
+            }
 
             long last = plugin.getLastActive(player);
             // 添加时间合理性检查
