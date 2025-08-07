@@ -50,6 +50,8 @@ mysql:
   username: "root"
   password: ""
   table_prefix: "checkafk_"
+  # 是否使用SSL连接
+  useSSL: false
   # 连接池设置
   connection_pool:
     maximum-pool-size: 10

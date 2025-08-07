@@ -139,7 +139,8 @@ public final class CheckAfk extends JavaPlugin {
         hikariConfig.setJdbcUrl("jdbc:mysql://" + 
             config.getString("mysql.host") + ":" + 
             config.getInt("mysql.port") + "/" + 
-            config.getString("mysql.database"));
+            config.getString("mysql.database") + 
+            "?useSSL=" + config.getBoolean("mysql.useSSL", false));
         hikariConfig.setUsername(config.getString("mysql.username"));
         hikariConfig.setPassword(config.getString("mysql.password"));
         hikariConfig.setPoolName("CheckAFK-Pool");
