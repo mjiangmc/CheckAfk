@@ -9,6 +9,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+
 public class ActivityListener implements Listener {
 
     private final CheckAfk plugin;
@@ -21,13 +22,13 @@ public class ActivityListener implements Listener {
 
     private void update(Player player, String key) {
         if (player.hasPermission("checkafk.bypass")) return;
-        
+
         // 检查玩家所在世界是否启用AFK检测
         if (!plugin.isWorldEnabled(player)) {
             if (config.getBoolean("debug")) {
-                Bukkit.getLogger().info(plugin.formatMessage("world-disabled", 
-                    "player", player.getName(),
-                    "world", player.getWorld().getName()));
+                Bukkit.getLogger().info(plugin.formatMessage("world-disabled",
+                        "player", player.getName(),
+                        "world", player.getWorld().getName()));
             }
             return;
         }
@@ -42,8 +43,12 @@ public class ActivityListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        plugin.clearActivity(e.getPlayer());
-        plugin.updateActivity(e.getPlayer());
+        Player player = e.getPlayer();
+        plugin.clearActivity(player);
+        plugin.updateActivity(player); // 更新活动时间并加载数据库中的服务器记录
+        // 删除缓存，确保重新从数据库加载时间
+        plugin.playerTimes.remove(player.getUniqueId());
+        plugin.getPlayerTime(player.getUniqueId()); // 强制加载玩家AFK时间到缓存，确保切换子服生效
     }
 
     @EventHandler

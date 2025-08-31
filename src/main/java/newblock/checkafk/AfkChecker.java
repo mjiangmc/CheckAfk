@@ -1,5 +1,7 @@
 package newblock.checkafk;
 
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -22,12 +24,30 @@ public class AfkChecker implements Runnable {
         List<String> commands = config.getStringList("commands");
         boolean debug = config.getBoolean("debug");
 
+        // 如果服务器名未获取且有玩家在线，尝试获取
+        if (plugin.getServerName() == null) {
+            Player anyPlayer = null;
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                anyPlayer = p;
+                break;
+            }
+            if (anyPlayer != null) {
+                ByteArrayDataOutput out = ByteStreams.newDataOutput();
+                out.writeUTF("GetServer");
+                anyPlayer.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
+                if (debug) {
+                    Bukkit.getLogger().info(plugin.formatMessage("requesting-server-name"));
+                }
+            } else if (debug) {
+                Bukkit.getLogger().warning("无在线玩家，无法请求服务器名称");
+            }
+        }
+
         // 检查是否在允许检测的时间段内
         if (!plugin.isTimeEnabled()) {
             if (debug) {
                 Bukkit.getLogger().info(plugin.formatMessage("time-range-disabled"));
             }
-            // 在禁用时间段内，重置所有玩家的活跃时间
             for (Player player : Bukkit.getOnlinePlayers()) {
                 plugin.setLastActive(player, now);
             }
@@ -36,60 +56,65 @@ public class AfkChecker implements Runnable {
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player.hasPermission("checkafk.bypass")) continue;
-            
-            // 检查玩家所在世界是否启用AFK检测
+
             if (!plugin.isWorldEnabled(player)) {
                 if (debug) {
-                    Bukkit.getLogger().info(plugin.formatMessage("world-disabled", 
-                        "player", player.getName(),
-                        "world", player.getWorld().getName()));
+                    Bukkit.getLogger().info(plugin.formatMessage("world-disabled",
+                            "player", player.getName(),
+                            "world", player.getWorld().getName()));
                 }
-                // 在禁用世界中，重置玩家的活跃时间
                 plugin.setLastActive(player, now);
                 continue;
             }
 
             long last = plugin.getLastActive(player);
-            // 添加时间合理性检查
             if (last <= 0 || last > now) {
-                // 异常时间值，重置为当前时间
                 plugin.setLastActive(player, now);
                 last = now;
             }
             long elapsed = now - last;
             int playerTimeout = plugin.getPlayerTime(player.getUniqueId()) * 1000;
-            
-            // 最大合理AFK时间设为1小时(3600000毫秒)
+
             long maxReasonableAfkTime = 3600000;
             if (elapsed > maxReasonableAfkTime) {
-                // 超过最大合理时间，重置活动时间
                 plugin.setLastActive(player, now);
                 elapsed = 0;
                 if (debug) {
-                    Bukkit.getLogger().info(plugin.formatMessage("reset-abnormal-time", 
-                        "player", player.getName(),
-                        "elapsed", String.valueOf(elapsed / 1000)));
+                    Bukkit.getLogger().info(plugin.formatMessage("reset-abnormal-time",
+                            "player", player.getName(),
+                            "elapsed", String.valueOf(elapsed / 1000)));
                 }
                 continue;
             }
 
             if (debug) {
-                Bukkit.getLogger().info(plugin.formatMessage("checking-player", 
-                    "player", player.getName(), 
-                    "seconds", String.valueOf(elapsed / 1000),
-                    "timeout", String.valueOf(playerTimeout / 1000)));
+                Bukkit.getLogger().info(plugin.formatMessage("checking-player",
+                        "player", player.getName(),
+                        "seconds", String.valueOf(elapsed / 1000),
+                        "timeout", String.valueOf(playerTimeout / 1000)));
             }
 
             if (elapsed >= playerTimeout) {
+                if (config.getBoolean("mysql.enabled")) {
+                    String serverName = plugin.getServerName();
+                    if (serverName != null && !serverName.isEmpty()) {
+                        plugin.recordAfkServer(player.getUniqueId(), serverName);
+                        if (debug) {
+                            Bukkit.getLogger().info("玩家进入AFK状态，记录服务器: 玩家=" + player.getName() + ", Server=" + serverName);
+                        }
+                    } else if (debug) {
+                        Bukkit.getLogger().warning(plugin.formatMessage("no-server-name",
+                                "player", player.getName()));
+                    }
+                }
                 for (String cmd : commands) {
                     String run = cmd.replace("%player%", player.getName());
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), run);
-
                     if (debug) {
                         Bukkit.getLogger().info(plugin.formatMessage("executing-command", "command", run));
                     }
                 }
-                plugin.clearActivity(player); // 清除记录，玩家需要重新活动
+                plugin.clearActivity(player);
                 if (debug) {
                     Bukkit.getLogger().info(plugin.formatMessage("cleared-activity", "player", player.getName()));
                 }

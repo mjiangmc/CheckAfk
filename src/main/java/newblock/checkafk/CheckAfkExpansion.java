@@ -43,6 +43,10 @@ public class CheckAfkExpansion extends PlaceholderExpansion {
             return (now - lastActive) >= timeout ? "AFK" : "Active";
         }
 
+        if (params.equalsIgnoreCase("execcommandsserver")) {
+            return plugin.getAfkServer(player.getUniqueId());
+        }
+
         return null;
     }
 
