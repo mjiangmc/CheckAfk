@@ -25,18 +25,11 @@ enable-time-range: []
 # 不检测AFK的世界列表
 disabled-worlds:
   - pvp
+  - duel
   - zq
   - zq1
   - zq2
   - zq3
-  - zq4
-  - zq5
-  - LK_zq
-  - LK_zq1
-  - LK_zq2
-  - LK_zq3
-  - LK_zq4
-  - LK_zq5
 
 
 ############################
@@ -81,3 +74,5 @@ useitem: true
 attack: true
 # 查看成就(暂时不支持)
 achievement: true
+# 是否启用视角转动检测(大于30°)
+look-around: true
